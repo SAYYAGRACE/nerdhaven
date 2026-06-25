@@ -1,0 +1,315 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          String    @default("STUDENT")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  profile              Profile?
+  enrollments          Enrollment[]
+  payments             Payment[]
+  assessmentAttempts   AssessmentAttempt[]
+  cognitiveDiagnostics CognitiveDiagnostic[]
+  practiceTests        PracticeTest[]
+  studyPlans           StudyPlan[]
+}
+
+model Profile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  tier        String   @default("PRIMARY")
+  displayName String?
+  avatarUrl   String?
+  dateOfBirth DateTime?
+  phone       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Course {
+  id             String   @id @default(cuid())
+  title          String
+  slug           String   @unique
+  description    String?
+  shortDescription String?
+  thumbnailUrl   String?
+  tier           String   @default("PRIMARY")
+  category       String?
+  difficulty     String   @default("BEGINNER")
+  priceInKobo    Int      @default(0)
+  currency       String   @default("NGN")
+  published      Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  curriculumNodes CurriculumNode[]
+  enrollments     Enrollment[]
+  payments        Payment[]
+}
+
+model CurriculumNode {
+  id        String   @id @default(cuid())
+  courseId   String
+  parentId  String?
+  examId    String?
+  type      String   @default("LESSON")
+  title     String
+  content   String?
+  order     Int      @default(0)
+  xpReward  Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  course       Course           @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  parent       CurriculumNode?  @relation("CurriculumTree", fields: [parentId], references: [id])
+  children     CurriculumNode[] @relation("CurriculumTree")
+  exam         Exam?            @relation(fields: [examId], references: [id])
+  assessmentAttempts AssessmentAttempt[]
+  cognitiveDiagnostics CognitiveDiagnostic[]
+
+  @@index([courseId])
+  @@index([parentId])
+  @@index([examId])
+}
+
+model Enrollment {
+  id          String   @id @default(cuid())
+  userId      String
+  courseId     String
+  status      String   @default("ACTIVE")
+  enrolledAt  DateTime @default(now())
+  completedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
+  @@index([userId])
+  @@index([courseId])
+}
+
+model Payment {
+  id                String   @id @default(cuid())
+  userId            String
+  courseId          String
+  planType          String   @default("full")
+  amountInKobo      Int
+  currency          String   @default("NGN")
+  provider          String   @default("paystack")
+  providerReference String?  @unique
+  status            String   @default("INITIATED")
+  metadata          String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  user                User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course              Course                   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  paymentStateTransitions PaymentStateTransition[]
+
+  @@index([userId])
+  @@index([courseId])
+  @@index([status])
+}
+
+model PaymentEvent {
+  id               String   @id @default(cuid())
+  provider         String
+  providerEventId  String
+  type             String
+  data             String?
+  createdAt        DateTime @default(now())
+
+  @@unique([provider, providerEventId])
+}
+
+model PaymentStateTransition {
+  id         String   @id @default(cuid())
+  paymentId  String
+  fromStatus String
+  toStatus   String
+  reason     String?
+  createdAt  DateTime @default(now())
+
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+
+  @@index([paymentId])
+}
+
+model AssessmentAttempt {
+  id                String    @id @default(cuid())
+  userId            String
+  curriculumNodeId  String
+  score             Int?
+  maxScore          Int       @default(0)
+  answers           String?
+  startedAt         DateTime  @default(now())
+  completedAt       DateTime?
+  createdAt         DateTime  @default(now())
+
+  user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  curriculumNode  CurriculumNode     @relation(fields: [curriculumNodeId], references: [id], onDelete: Cascade)
+  cognitiveDiagnostics CognitiveDiagnostic[]
+
+  @@index([userId])
+  @@index([curriculumNodeId])
+}
+
+model CognitiveDiagnostic {
+  id               String   @id @default(cuid())
+  userId           String
+  curriculumNodeId String
+  attemptId        String?
+  bottleneckType   String   @default("CONCEPTUAL_GAP")
+  confidence       Float    @default(0.0)
+  metadata         String?
+  createdAt        DateTime @default(now())
+
+  user            User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  curriculumNode  CurriculumNode    @relation(fields: [curriculumNodeId], references: [id], onDelete: Cascade)
+  attempt         AssessmentAttempt? @relation(fields: [attemptId], references: [id])
+
+  @@index([userId])
+  @@index([curriculumNodeId])
+  @@index([attemptId])
+}
+
+model Exam {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  fullName    String?
+  description String?
+  country     String?
+  website     String?
+  logoUrl     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  subjects         Subject[]
+  resources        StudyResource[]
+  practiceTests    PracticeTest[]
+  studyPlans       StudyPlan[]
+  pastQuestions    PastQuestion[]
+  curriculumNodes  CurriculumNode[]
+}
+
+model Subject {
+  id          String   @id @default(cuid())
+  examId      String
+  name        String
+  slug        String   @unique
+  description String?
+  icon        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  exam              Exam           @relation(fields: [examId], references: [id], onDelete: Cascade)
+  pastQuestions     PastQuestion[]
+  resources         StudyResource[]
+  practiceTests     PracticeTest[]
+
+  @@index([examId])
+}
+
+model PastQuestion {
+  id            String   @id @default(cuid())
+  subjectId     String
+  examId        String
+  year          Int
+  questionType  String   @default("OBJECTIVE")
+  question      String
+  options       String?
+  correctAnswer String?
+  explanation   String?
+  difficulty    String   @default("MEDIUM")
+  marks         Int      @default(1)
+  createdAt     DateTime @default(now())
+
+  subject Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  exam    Exam    @relation(fields: [examId], references: [id], onDelete: Cascade)
+
+  @@index([subjectId, year])
+  @@index([examId])
+  @@index([subjectId, year, questionType])
+}
+
+model StudyResource {
+  id          String   @id @default(cuid())
+  examId      String?
+  subjectId   String?
+  title       String
+  type        String   @default("NOTE")
+  url         String?
+  content     String?
+  description String?
+  tags        String?
+  fileSize    Int?
+  duration    Int?
+  free        Boolean  @default(false)
+  downloads   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  exam    Exam?    @relation(fields: [examId], references: [id])
+  subject Subject? @relation(fields: [subjectId], references: [id])
+
+  @@index([examId])
+  @@index([subjectId])
+}
+
+model PracticeTest {
+  id             String    @id @default(cuid())
+  userId         String
+  examId         String?
+  subjectId      String?
+  title          String
+  questionCount  Int       @default(0)
+  timeLimit      Int?
+  status         String    @default("IN_PROGRESS")
+  score          Int?
+  maxScore       Int?
+  answers        String?
+  startedAt      DateTime  @default(now())
+  completedAt    DateTime?
+  createdAt      DateTime  @default(now())
+
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exam    Exam?    @relation(fields: [examId], references: [id])
+  subject Subject? @relation(fields: [subjectId], references: [id])
+
+  @@index([userId])
+}
+
+model StudyPlan {
+  id         String   @id @default(cuid())
+  userId     String
+  examId     String
+  targetDate DateTime?
+  dailyHours Int      @default(2)
+  subjects   String?
+  status     String   @default("ACTIVE")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  exam Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
