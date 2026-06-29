@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
-    "postbuild": "cp -r public/. .next/standalone/nerdhaven/public/ && rm -f .next/standalone/nerdhaven/.env",
+    "postbuild": "test -d .next/standalone/nerdhaven && cp -r public/. .next/standalone/nerdhaven/public/ && rm -f .next/standalone/nerdhaven/.env || true",
     "start": "node .next/standalone/nerdhaven/server.js",
     "lint": "eslint",
     "db:seed": "tsx prisma/seed.ts",
