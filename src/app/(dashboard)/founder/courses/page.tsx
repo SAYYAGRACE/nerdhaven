@@ -34,8 +34,9 @@ interface Course {
   title: string
   slug: string
   description: string | null
-  difficulty: string
   tier: string
+  difficulty: string
+  priceInKobo: number
   _count: { enrollments: number }
 }
 
@@ -138,41 +139,49 @@ export default function BusinessCourses() {
           <motion.div variants={stagger.container} className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {filtered.map((course) => (
               <motion.div key={course.id} variants={stagger.item}>
-                <Link
-                  href={`/courses/${course.id}`}
-                  className="group block h-full rounded-xl border border-gray-800 bg-gray-900 shadow-sm transition hover:-translate-y-1 hover:border-gray-700 hover:shadow-lg"
-                >
-                  <div className="flex items-center gap-3 rounded-t-xl border-b border-gray-800 bg-gray-800/50 p-5">
-                    <div className="rounded-lg bg-gray-700 p-2.5">
-                      <BookOpen className="h-5 w-5 text-gray-300" />
+                <div className="h-full rounded-xl border border-gray-800 bg-gray-900 shadow-sm transition hover:-translate-y-1 hover:border-gray-700 hover:shadow-lg">
+                  <Link href={`/courses/${course.slug}`} className="group block">
+                    <div className="flex items-center gap-3 rounded-t-xl border-b border-gray-800 bg-gray-800/50 p-5">
+                      <div className="rounded-lg bg-gray-700 p-2.5">
+                        <BookOpen className="h-5 w-5 text-gray-300" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="truncate text-lg font-bold text-white">{course.title}</h3>
+                      </div>
                     </div>
-                    <div className="min-w-0 flex-1">
-                      <h3 className="truncate text-lg font-bold text-white">{course.title}</h3>
+                    <div className="space-y-3 p-4 pb-3">
+                      <p className="text-sm leading-relaxed text-gray-400 line-clamp-2">
+                        {course.description || "No description available."}
+                      </p>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span
+                          className={cn(
+                            "rounded-full border px-2.5 py-0.5 text-xs font-medium",
+                            difficultyStyles[course.difficulty] || "bg-gray-800 text-gray-400 border-gray-700",
+                          )}
+                        >
+                          {course.difficulty.charAt(0) + course.difficulty.slice(1).toLowerCase()}
+                        </span>
+                        <span className="flex items-center gap-1 text-xs text-gray-500">
+                          <Users className="h-3.5 w-3.5" />
+                          {course._count.enrollments} enrolled
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1 text-sm font-medium text-gray-300 transition group-hover:text-white">
+                        View Course <ChevronRight className="h-4 w-4" />
+                      </div>
                     </div>
+                  </Link>
+                  <div className="flex items-center justify-between border-t border-gray-800 px-4 py-3">
+                    <span className="text-sm font-bold text-gray-100">₦{(course.priceInKobo / 100).toLocaleString()}</span>
+                    <Link
+                      href={`/checkout/${course.slug}`}
+                      className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-indigo-700"
+                    >
+                      Buy Now
+                    </Link>
                   </div>
-                  <div className="space-y-3 p-4">
-                    <p className="text-sm leading-relaxed text-gray-400 line-clamp-2">
-                      {course.description || "No description available."}
-                    </p>
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span
-                        className={cn(
-                          "rounded-full border px-2.5 py-0.5 text-xs font-medium",
-                          difficultyStyles[course.difficulty] || "bg-gray-800 text-gray-400 border-gray-700",
-                        )}
-                      >
-                        {course.difficulty.charAt(0) + course.difficulty.slice(1).toLowerCase()}
-                      </span>
-                      <span className="flex items-center gap-1 text-xs text-gray-500">
-                        <Users className="h-3.5 w-3.5" />
-                        {course._count.enrollments} enrolled
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1 text-sm font-medium text-gray-300 transition group-hover:text-white">
-                      View Course <ChevronRight className="h-4 w-4" />
-                    </div>
-                  </div>
-                </Link>
+                </div>
               </motion.div>
             ))}
           </motion.div>

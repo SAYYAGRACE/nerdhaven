@@ -19,6 +19,7 @@ import {
   Clock,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { getWhatsAppGroup } from "@/lib/groups"
 import toast from "react-hot-toast"
 
 interface SubjectBrief {
@@ -269,6 +270,37 @@ export default function ExamDetailPage() {
             </div>
           )}
         </motion.div>
+
+        {/* WhatsApp Study Group */}
+        {exam && getWhatsAppGroup(exam.slug) && (
+          <motion.div variants={stagger.item}>
+            <h2 className="mb-4 text-lg font-semibold text-gray-900">Study Group</h2>
+            <a
+              href={getWhatsAppGroup(exam.slug)!.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-4 rounded-xl border border-emerald-100 bg-emerald-50 p-4 transition hover:bg-emerald-100"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100 text-2xl">
+                💬
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-emerald-900">
+                  {getWhatsAppGroup(exam.slug)!.name}
+                </h3>
+                <p className="text-sm text-emerald-700">
+                  {getWhatsAppGroup(exam.slug)!.description}
+                </p>
+                <p className="mt-1 text-xs text-emerald-600">
+                  {getWhatsAppGroup(exam.slug)!.memberCount.toLocaleString()} members
+                </p>
+              </div>
+              <span className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700">
+                Join Free
+              </span>
+            </a>
+          </motion.div>
+        )}
       </div>
     </motion.div>
   )

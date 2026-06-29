@@ -15,8 +15,14 @@ import {
   BookOpen,
   Loader2,
   ArrowLeft,
+  Video,
+  Download,
+  Headphones,
+  ExternalLink,
+  Sparkles,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { getWhatsAppGroup } from "@/lib/groups"
 import Link from "next/link"
 import toast from "react-hot-toast"
 
@@ -34,8 +40,13 @@ interface CurriculumNode {
 interface CourseDetail {
   id: string
   title: string
+  slug: string
   description: string | null
+  priceInKobo: number
+  tier: string
+  isEnrolled: boolean
   curriculumNodes: CurriculumNode[]
+  resources: { id: string; title: string; type: string; url: string | null; description: string | null; free: boolean; fileSize: number | null; duration: number | null; downloads: number }[]
 }
 
 const nodeIcons: Record<string, React.ElementType> = {
@@ -62,11 +73,13 @@ export default function CourseDetailPage() {
         if (res.ok) {
           const data = await res.json()
           setCourse(data)
-          const modules = data.curriculumNodes?.filter((n: CurriculumNode) => n.type === "MODULE") || []
-          if (modules.length > 0) {
-            setExpandedModules(new Set([modules[0].id]))
-            const firstLesson = modules[0].children?.[0]
-            if (firstLesson) setActiveNode(firstLesson)
+          if (data.isEnrolled) {
+            const modules = data.curriculumNodes?.filter((n: CurriculumNode) => n.type === "MODULE") || []
+            if (modules.length > 0) {
+              setExpandedModules(new Set([modules[0].id]))
+              const firstLesson = modules[0].children?.[0]
+              if (firstLesson) setActiveNode(firstLesson)
+            }
           }
         }
       } catch {
@@ -138,6 +151,39 @@ export default function CourseDetailPage() {
     )
   }
 
+  if (!course.isEnrolled) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 p-8">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-lg">
+          <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-lg">
+            <div className="bg-gradient-to-r from-indigo-500 to-purple-600 px-8 py-10 text-center text-white">
+              <BookOpen className="mx-auto h-12 w-12 text-white/80" />
+              <h1 className="mt-4 text-2xl font-bold">{course.title}</h1>
+              <p className="mt-2 text-white/70">{course.description}</p>
+            </div>
+            <div className="space-y-6 p-8">
+              <div className="flex items-center justify-between rounded-xl bg-gray-50 p-4">
+                <span className="text-gray-600">Price</span>
+                <span className="text-2xl font-bold text-gray-900">
+                  ₦{(course.priceInKobo / 100).toLocaleString()}
+                </span>
+              </div>
+              <Link
+                href={`/checkout/${course.slug}`}
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg transition hover:bg-indigo-700"
+              >
+                Enroll Now
+              </Link>
+              <Link href="/courses" className="block text-center text-sm text-gray-400 hover:text-gray-600">
+                Browse all courses
+              </Link>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex min-h-screen bg-white">
       <aside className="hidden w-80 shrink-0 border-r border-gray-200 bg-gray-50 p-4 lg:block">
@@ -203,6 +249,61 @@ export default function CourseDetailPage() {
               </div>
             ))}
         </nav>
+
+        {course && getWhatsAppGroup(course.slug) && (
+          <a
+            href={getWhatsAppGroup(course.slug)!.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 flex items-center gap-3 rounded-xl border border-emerald-100 bg-emerald-50 p-3 text-sm transition hover:bg-emerald-100"
+          >
+            <span className="text-lg">💬</span>
+            <div className="flex-1">
+              <p className="font-medium text-emerald-900">Study Group</p>
+              <p className="text-xs text-emerald-600">
+                {getWhatsAppGroup(course.slug)!.memberCount.toLocaleString()} members
+              </p>
+            </div>
+            <span className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white">
+              Join
+            </span>
+          </a>
+        )}
+
+        {course.resources && course.resources.length > 0 && (
+          <div className="mt-6">
+            <h3 className="mb-3 text-sm font-semibold text-gray-700 flex items-center gap-1.5">
+              <Download className="h-4 w-4" /> Resources ({course.resources.length})
+            </h3>
+            <div className="space-y-2">
+              {course.resources.map((r) => (
+                <a
+                  key={r.id}
+                  href={r.url || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2.5 rounded-lg border border-gray-100 bg-white p-2.5 text-xs transition hover:border-gray-200 hover:shadow-sm"
+                >
+                  <span className={cn(
+                    "flex h-7 w-7 shrink-0 items-center justify-center rounded-md",
+                    r.type === "PDF" && "bg-red-50 text-red-600",
+                    r.type === "VIDEO" && "bg-purple-50 text-purple-600",
+                    r.type === "AUDIO" && "bg-cyan-50 text-cyan-600",
+                    r.type === "NOTE" && "bg-amber-50 text-amber-600",
+                  )}>
+                    {r.type === "VIDEO" ? <Video className="h-3.5 w-3.5" /> :
+                     r.type === "AUDIO" ? <Headphones className="h-3.5 w-3.5" /> :
+                     r.type === "PDF" ? <FileText className="h-3.5 w-3.5" /> :
+                     <Download className="h-3.5 w-3.5" />}
+                  </span>
+                  <span className="flex-1 truncate text-gray-700">{r.title}</span>
+                  {r.free && <Sparkles className="h-3 w-3 shrink-0 text-emerald-500" />}
+                  <ExternalLink className="h-3 w-3 shrink-0 text-gray-300" />
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
       </aside>
 
       <main className="flex-1 overflow-y-auto">

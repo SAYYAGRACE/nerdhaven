@@ -608,6 +608,7 @@ export type AssessmentAttemptCreateOrConnectWithoutUserInput = {
 
 export type AssessmentAttemptCreateManyUserInputEnvelope = {
   data: Prisma.AssessmentAttemptCreateManyUserInput | Prisma.AssessmentAttemptCreateManyUserInput[]
+  skipDuplicates?: boolean
 }
 
 export type AssessmentAttemptUpsertWithWhereUniqueWithoutUserInput = {
@@ -672,6 +673,7 @@ export type AssessmentAttemptCreateOrConnectWithoutCurriculumNodeInput = {
 
 export type AssessmentAttemptCreateManyCurriculumNodeInputEnvelope = {
   data: Prisma.AssessmentAttemptCreateManyCurriculumNodeInput | Prisma.AssessmentAttemptCreateManyCurriculumNodeInput[]
+  skipDuplicates?: boolean
 }
 
 export type AssessmentAttemptUpsertWithWhereUniqueWithoutCurriculumNodeInput = {
@@ -1635,6 +1637,7 @@ export type AssessmentAttemptCreateManyArgs<ExtArgs extends runtime.Types.Extens
    * The data used to create many AssessmentAttempts.
    */
   data: Prisma.AssessmentAttemptCreateManyInput | Prisma.AssessmentAttemptCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1653,6 +1656,7 @@ export type AssessmentAttemptCreateManyAndReturnArgs<ExtArgs extends runtime.Typ
    * The data used to create many AssessmentAttempts.
    */
   data: Prisma.AssessmentAttemptCreateManyInput | Prisma.AssessmentAttemptCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

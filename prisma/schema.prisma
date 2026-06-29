@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
 model User {
@@ -60,6 +60,7 @@ model Course {
   curriculumNodes CurriculumNode[]
   enrollments     Enrollment[]
   payments        Payment[]
+  resources       StudyResource[]
 }
 
 model CurriculumNode {
@@ -254,6 +255,7 @@ model StudyResource {
   id          String   @id @default(cuid())
   examId      String?
   subjectId   String?
+  courseId    String?
   title       String
   type        String   @default("NOTE")
   url         String?
@@ -269,9 +271,11 @@ model StudyResource {
 
   exam    Exam?    @relation(fields: [examId], references: [id])
   subject Subject? @relation(fields: [subjectId], references: [id])
+  course  Course?  @relation(fields: [courseId], references: [id])
 
   @@index([examId])
   @@index([subjectId])
+  @@index([courseId])
 }
 
 model PracticeTest {
@@ -295,6 +299,16 @@ model PracticeTest {
   subject Subject? @relation(fields: [subjectId], references: [id])
 
   @@index([userId])
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String
+  subject   String?
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
 
 model StudyPlan {

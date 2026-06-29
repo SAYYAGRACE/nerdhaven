@@ -66,6 +66,7 @@ export const ModelName = {
   PastQuestion: 'PastQuestion',
   StudyResource: 'StudyResource',
   PracticeTest: 'PracticeTest',
+  ContactMessage: 'ContactMessage',
   StudyPlan: 'StudyPlan'
 } as const
 
@@ -76,6 +77,9 @@ export type ModelName = (typeof ModelName)[keyof typeof ModelName]
  */
 
 export const TransactionIsolationLevel = runtime.makeStrictEnum({
+  ReadUncommitted: 'ReadUncommitted',
+  ReadCommitted: 'ReadCommitted',
+  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 } as const)
 
@@ -286,6 +290,7 @@ export const StudyResourceScalarFieldEnum = {
   id: 'id',
   examId: 'examId',
   subjectId: 'subjectId',
+  courseId: 'courseId',
   title: 'title',
   type: 'type',
   url: 'url',
@@ -323,6 +328,19 @@ export const PracticeTestScalarFieldEnum = {
 export type PracticeTestScalarFieldEnum = (typeof PracticeTestScalarFieldEnum)[keyof typeof PracticeTestScalarFieldEnum]
 
 
+export const ContactMessageScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  subject: 'subject',
+  message: 'message',
+  read: 'read',
+  createdAt: 'createdAt'
+} as const
+
+export type ContactMessageScalarFieldEnum = (typeof ContactMessageScalarFieldEnum)[keyof typeof ContactMessageScalarFieldEnum]
+
+
 export const StudyPlanScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -344,6 +362,14 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
+} as const
+
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
 export const NullsOrder = {

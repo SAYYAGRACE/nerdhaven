@@ -17,6 +17,7 @@ import {
   Loader2,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { getAllCourseGroups } from "@/lib/groups"
 import toast from "react-hot-toast"
 
 const stagger = {
@@ -27,12 +28,7 @@ const stagger = {
   },
 }
 
-const studyGroups = [
-  { id: "g1", name: "Advanced Quantum Mechanics", members: 9, next: "Today, 4 PM", membersOnline: 3 },
-  { id: "g2", name: "Econometrics with R", members: 12, next: "Tomorrow, 10 AM", membersOnline: 5 },
-  { id: "g3", name: "ML Research Group", members: 18, next: "Wed, 2 PM", membersOnline: 7 },
-  { id: "g4", name: "Organic Chemistry Lab Prep", members: 6, next: "Thu, 1 PM", membersOnline: 2 },
-]
+const studyGroups = getAllCourseGroups()
 
 const collaborators = [
   { id: "c1", name: "Dr. Adebayo K.", field: "Machine Learning", institution: "University of Lagos", mutual: 4 },
@@ -49,16 +45,7 @@ const seminars = [
 ]
 
 export default function AcademicNetwork() {
-  const [joining, setJoining] = useState<string | null>(null)
   const [connecting, setConnecting] = useState<string | null>(null)
-
-  const handleJoin = (id: string) => {
-    setJoining(id)
-    setTimeout(() => {
-      setJoining(null)
-      toast.success("Joined study group")
-    }, 800)
-  }
 
   const handleConnect = (id: string) => {
     setConnecting(id)
@@ -85,43 +72,31 @@ export default function AcademicNetwork() {
           <h2 className="mb-4 text-lg font-semibold text-slate-800">Study Groups</h2>
           <div className="space-y-3">
             {studyGroups.map((group) => (
-              <div key={group.id} className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-slate-300 hover:shadow-md">
+              <a
+                key={group.link}
+                href={group.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-slate-300 hover:shadow-md"
+              >
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-4">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100">
-                      <Users className="h-6 w-6 text-slate-500" />
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 text-xl">
+                      💬
                     </div>
                     <div>
                       <h3 className="font-semibold text-slate-800">{group.name}</h3>
                       <div className="flex items-center gap-3 text-xs text-slate-400">
-                        <span>{group.members} members</span>
-                        <span className="flex items-center gap-1">
-                          <Circle className="h-2 w-2 fill-emerald-400 text-emerald-400" />
-                          {group.membersOnline} online
-                        </span>
+                        <span>{group.memberCount} members</span>
                       </div>
+                      <p className="mt-0.5 text-xs text-slate-500">{group.description}</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="hidden text-right sm:block">
-                      <p className="text-xs text-slate-400">Next session</p>
-                      <p className="text-sm font-medium text-slate-700">{group.next}</p>
-                    </div>
-                    <button
-                      onClick={() => handleJoin(group.id)}
-                      disabled={joining === group.id}
-                      className="inline-flex items-center gap-2 rounded-lg bg-slate-800 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700 disabled:opacity-50"
-                    >
-                      {joining === group.id ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <UserPlus className="h-4 w-4" />
-                      )}
-                      Join
-                    </button>
-                  </div>
+                  <span className="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700">
+                    Join Free
+                  </span>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         </motion.div>

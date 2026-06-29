@@ -743,6 +743,7 @@ export type CurriculumNodeCreateOrConnectWithoutCourseInput = {
 
 export type CurriculumNodeCreateManyCourseInputEnvelope = {
   data: Prisma.CurriculumNodeCreateManyCourseInput | Prisma.CurriculumNodeCreateManyCourseInput[]
+  skipDuplicates?: boolean
 }
 
 export type CurriculumNodeUpsertWithWhereUniqueWithoutCourseInput = {
@@ -854,6 +855,7 @@ export type CurriculumNodeCreateOrConnectWithoutParentInput = {
 
 export type CurriculumNodeCreateManyParentInputEnvelope = {
   data: Prisma.CurriculumNodeCreateManyParentInput | Prisma.CurriculumNodeCreateManyParentInput[]
+  skipDuplicates?: boolean
 }
 
 export type CurriculumNodeUpsertWithoutChildrenInput = {
@@ -1114,6 +1116,7 @@ export type CurriculumNodeCreateOrConnectWithoutExamInput = {
 
 export type CurriculumNodeCreateManyExamInputEnvelope = {
   data: Prisma.CurriculumNodeCreateManyExamInput | Prisma.CurriculumNodeCreateManyExamInput[]
+  skipDuplicates?: boolean
 }
 
 export type CurriculumNodeUpsertWithWhereUniqueWithoutExamInput = {
@@ -2141,6 +2144,7 @@ export type CurriculumNodeCreateManyArgs<ExtArgs extends runtime.Types.Extension
    * The data used to create many CurriculumNodes.
    */
   data: Prisma.CurriculumNodeCreateManyInput | Prisma.CurriculumNodeCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -2159,6 +2163,7 @@ export type CurriculumNodeCreateManyAndReturnArgs<ExtArgs extends runtime.Types.
    * The data used to create many CurriculumNodes.
    */
   data: Prisma.CurriculumNodeCreateManyInput | Prisma.CurriculumNodeCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

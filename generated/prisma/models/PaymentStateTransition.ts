@@ -404,6 +404,7 @@ export type PaymentStateTransitionCreateOrConnectWithoutPaymentInput = {
 
 export type PaymentStateTransitionCreateManyPaymentInputEnvelope = {
   data: Prisma.PaymentStateTransitionCreateManyPaymentInput | Prisma.PaymentStateTransitionCreateManyPaymentInput[]
+  skipDuplicates?: boolean
 }
 
 export type PaymentStateTransitionUpsertWithWhereUniqueWithoutPaymentInput = {
@@ -1194,6 +1195,7 @@ export type PaymentStateTransitionCreateManyArgs<ExtArgs extends runtime.Types.E
    * The data used to create many PaymentStateTransitions.
    */
   data: Prisma.PaymentStateTransitionCreateManyInput | Prisma.PaymentStateTransitionCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1212,6 +1214,7 @@ export type PaymentStateTransitionCreateManyAndReturnArgs<ExtArgs extends runtim
    * The data used to create many PaymentStateTransitions.
    */
   data: Prisma.PaymentStateTransitionCreateManyInput | Prisma.PaymentStateTransitionCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

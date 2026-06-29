@@ -17,6 +17,7 @@ import {
   Clock,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { getAllCourseGroups } from "@/lib/groups"
 import { useState } from "react"
 
 const stagger = {
@@ -41,11 +42,7 @@ const playgrounds = [
   { id: "latex", name: "LaTeX", icon: ScrollText, color: "text-amber-500", status: "Running" },
 ]
 
-const studyGroups = [
-  { id: "1", name: "Quantum Mechanics Study", members: 8, next: "Today, 6 PM", color: "bg-blue-100 text-blue-700" },
-  { id: "2", name: "Econometrics Lab", members: 5, next: "Tomorrow, 10 AM", color: "bg-amber-100 text-amber-700" },
-  { id: "3", name: "ML Research Group", members: 12, next: "Wed, 2 PM", color: "bg-purple-100 text-purple-700" },
-]
+const studyGroups = getAllCourseGroups()
 
 const publications = [
   { id: "1", title: "Neural Network Approaches in African Language Processing", authors: "Dr. Okafor et al.", date: "2 days ago", journal: "Journal of AI Research" },
@@ -149,18 +146,24 @@ export default function ScholarDashboard() {
             <h2 className="mb-4 text-lg font-semibold text-slate-800">Peer Study Network</h2>
             <div className="space-y-3">
               {studyGroups.map((g) => (
-                <div key={g.id} className="flex items-center gap-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-500">
-                    <Users className="h-5 w-5" />
+                <a
+                  key={g.link}
+                  href={g.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition hover:shadow"
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-lg">
+                    💬
                   </div>
                   <div className="flex-1">
                     <p className="font-semibold text-slate-800">{g.name}</p>
-                    <p className="text-xs text-slate-400">{g.members} members · Next: {g.next}</p>
+                    <p className="text-xs text-slate-400">{g.memberCount} members</p>
                   </div>
-                  <button className="rounded-md bg-slate-800 px-4 py-2 text-xs font-medium text-white transition hover:bg-slate-700">
+                  <span className="rounded-md bg-emerald-600 px-4 py-2 text-xs font-medium text-white transition hover:bg-emerald-700">
                     Join
-                  </button>
-                </div>
+                  </span>
+                </a>
               ))}
             </div>
           </motion.div>

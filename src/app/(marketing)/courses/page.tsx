@@ -90,12 +90,12 @@ export default function CoursesPage() {
               const TierIcon = tierIcons[course.tier]
               return (
                 <motion.div key={course.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
-                  <Link href={`/courses/${course.id}`} className="group block">
-                    <div className="overflow-hidden rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-lg">
+                  <div className="overflow-hidden rounded-xl border border-gray-200 bg-white transition-shadow hover:shadow-lg">
+                    <Link href={`/courses/${course.slug}`} className="group block">
                       <div className="flex aspect-video items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-100">
                         <BookOpen className="h-12 w-12 text-indigo-300" />
                       </div>
-                      <div className="p-4">
+                      <div className="p-4 pb-2">
                         <div className="flex items-center gap-2">
                           <span className={cn("inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[11px] font-medium", tierColors[course.tier])}>
                             <TierIcon className="h-3 w-3" /> {course.tier.charAt(0) + course.tier.slice(1).toLowerCase()}
@@ -106,13 +106,21 @@ export default function CoursesPage() {
                         </div>
                         <h3 className="mt-3 text-sm font-semibold text-gray-900 transition-colors group-hover:text-indigo-600">{course.title}</h3>
                         <p className="mt-1 text-xs text-gray-500 line-clamp-2">{course.shortDescription || course.description}</p>
-                        <div className="mt-4 flex items-center justify-between">
-                          <span className="text-sm font-bold text-gray-900">{formatPrice(course.priceInKobo)}</span>
-                          <span className="flex items-center gap-1 text-xs text-gray-400"><Users className="h-3 w-3" />{course._count.enrollments}</span>
-                        </div>
+                      </div>
+                    </Link>
+                    <div className="flex items-center justify-between border-t border-gray-100 px-4 py-3">
+                      <span className="text-sm font-bold text-gray-900">{formatPrice(course.priceInKobo)}</span>
+                      <div className="flex items-center gap-2">
+                        <span className="flex items-center gap-1 text-xs text-gray-400"><Users className="h-3 w-3" />{course._count.enrollments}</span>
+                        <Link
+                          href={`/checkout/${course.slug}`}
+                          className="rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-indigo-700"
+                        >
+                          Buy Now
+                        </Link>
                       </div>
                     </div>
-                  </Link>
+                  </div>
                 </motion.div>
               )
             })}

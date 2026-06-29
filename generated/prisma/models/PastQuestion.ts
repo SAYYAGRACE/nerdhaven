@@ -642,6 +642,7 @@ export type PastQuestionCreateOrConnectWithoutExamInput = {
 
 export type PastQuestionCreateManyExamInputEnvelope = {
   data: Prisma.PastQuestionCreateManyExamInput | Prisma.PastQuestionCreateManyExamInput[]
+  skipDuplicates?: boolean
 }
 
 export type PastQuestionUpsertWithWhereUniqueWithoutExamInput = {
@@ -713,6 +714,7 @@ export type PastQuestionCreateOrConnectWithoutSubjectInput = {
 
 export type PastQuestionCreateManySubjectInputEnvelope = {
   data: Prisma.PastQuestionCreateManySubjectInput | Prisma.PastQuestionCreateManySubjectInput[]
+  skipDuplicates?: boolean
 }
 
 export type PastQuestionUpsertWithWhereUniqueWithoutSubjectInput = {
@@ -1615,6 +1617,7 @@ export type PastQuestionCreateManyArgs<ExtArgs extends runtime.Types.Extensions.
    * The data used to create many PastQuestions.
    */
   data: Prisma.PastQuestionCreateManyInput | Prisma.PastQuestionCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1633,6 +1636,7 @@ export type PastQuestionCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Ex
    * The data used to create many PastQuestions.
    */
   data: Prisma.PastQuestionCreateManyInput | Prisma.PastQuestionCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

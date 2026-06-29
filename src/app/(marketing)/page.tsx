@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { motion, useScroll, useTransform } from "framer-motion"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Footer } from "@/components/layout/footer"
 import {
@@ -140,31 +141,41 @@ function AnimatedCounter({ value, label, icon: Icon }: { value: string; label: s
   )
 }
 
+function FloatingParticles() {
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  if (!mounted) return null
+
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute -left-40 -top-40 h-80 w-80 rounded-full bg-indigo-200/30 blur-3xl" />
+      <div className="absolute -right-40 top-20 h-96 w-96 rounded-full bg-purple-200/30 blur-3xl" />
+      <div className="absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-emerald-200/20 blur-3xl" />
+      {Array.from({ length: 20 }).map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute h-2 w-2 rounded-full bg-indigo-400/30"
+          style={{
+            left: `${((i * 97 + 13) % 100)}%`,
+            top: `${((i * 53 + 71) % 100)}%`,
+          }}
+          animate={{
+            y: [0, -30, 0],
+            opacity: [0.3, 0.8, 0.3],
+          }}
+          transition={{ duration: 3 + (i % 3), repeat: Infinity, delay: (i * 0.3) % 2 }}
+        />
+      ))}
+    </div>
+  )
+}
+
 export default function MarketingHome() {
   return (
     <>
       {/* Hero */}
       <section className="relative overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -left-40 -top-40 h-80 w-80 rounded-full bg-indigo-200/30 blur-3xl" />
-          <div className="absolute -right-40 top-20 h-96 w-96 rounded-full bg-purple-200/30 blur-3xl" />
-          <div className="absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-emerald-200/20 blur-3xl" />
-          {Array.from({ length: 20 }).map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute h-2 w-2 rounded-full bg-indigo-400/30"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-              }}
-              animate={{
-                y: [0, -30, 0],
-                opacity: [0.3, 0.8, 0.3],
-              }}
-              transition={{ duration: 3 + Math.random() * 3, repeat: Infinity, delay: Math.random() * 2 }}
-            />
-          ))}
-        </div>
+        <FloatingParticles />
 
         <div className="relative mx-auto flex max-w-7xl flex-col items-center px-4 pb-32 pt-24 text-center sm:px-6 lg:px-8">
           <motion.h1
@@ -284,20 +295,25 @@ export default function MarketingHome() {
                   { angle: 0, label: "Detect" },
                   { angle: 120, label: "Diagnose" },
                   { angle: 240, label: "Rebuild" },
-                ].map((node) => (
-                  <motion.div
-                    key={node.label}
-                    className="absolute flex h-14 w-14 items-center justify-center rounded-full bg-indigo-500/80 text-xs font-bold text-white shadow-lg"
-                    style={{
-                      left: `calc(50% + ${60 * Math.cos((node.angle * Math.PI) / 180)}px - 28px)`,
-                      top: `calc(50% + ${60 * Math.sin((node.angle * Math.PI) / 180)}px - 28px)`,
-                    }}
-                    animate={{ scale: [1, 1.15, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, delay: node.angle / 120 }}
-                  >
-                    {node.label}
-                  </motion.div>
-                ))}
+                ].map((node) => {
+                  const rad = (node.angle * Math.PI) / 180
+                  const x = Math.round(60 * Math.cos(rad))
+                  const y = Math.round(60 * Math.sin(rad))
+                  return (
+                    <motion.div
+                      key={node.label}
+                      className="absolute flex h-14 w-14 items-center justify-center rounded-full bg-indigo-500/80 text-xs font-bold text-white shadow-lg"
+                      style={{
+                        left: `calc(50% + ${x - 28}px)`,
+                        top: `calc(50% + ${y - 28}px)`,
+                      }}
+                      animate={{ scale: [1, 1.15, 1] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: node.angle / 120 }}
+                    >
+                      {node.label}
+                    </motion.div>
+                  )
+                })}
               </div>
             </motion.div>
           </div>

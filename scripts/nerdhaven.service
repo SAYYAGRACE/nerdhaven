@@ -1,0 +1,24 @@
+[Unit]
+Description=Nerdhaven Next.js Application
+After=network.target
+
+[Service]
+Type=simple
+User=nerdhaven
+Group=nerdhaven
+WorkingDirectory=/opt/nerdhaven
+ExecStart=/usr/bin/node server.js
+Restart=always
+RestartSec=3
+EnvironmentFile=/opt/nerdhaven/.env.production
+Environment=NODE_ENV=production
+Environment=PORT=3000
+
+# Security hardening
+NoNewPrivileges=true
+ProtectSystem=full
+ProtectHome=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

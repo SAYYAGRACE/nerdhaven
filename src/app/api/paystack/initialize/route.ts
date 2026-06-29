@@ -16,7 +16,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "courseId is required" }, { status: 400 })
     }
 
-    const course = await prisma.course.findUnique({ where: { id: courseId } })
+    const course = await prisma.course.findFirst({
+      where: { OR: [{ id: courseId }, { slug: courseId }] },
+    })
     if (!course) {
       return NextResponse.json({ error: "Course not found" }, { status: 404 })
     }
@@ -26,7 +28,7 @@ export async function POST(request: Request) {
     }
 
     const existingEnrollment = await prisma.enrollment.findUnique({
-      where: { userId_courseId: { userId: session.user.id, courseId } },
+      where: { userId_courseId: { userId: session.user.id, courseId: course.id } },
     })
     if (existingEnrollment?.status === "ACTIVE") {
       return NextResponse.json({ error: "Already enrolled in this course" }, { status: 409 })
@@ -35,7 +37,7 @@ export async function POST(request: Request) {
     const payment = await prisma.payment.create({
       data: {
         userId: session.user.id,
-        courseId,
+        courseId: course.id,
         amountInKobo: course.priceInKobo,
         currency: course.currency || "NGN",
         status: "INITIATED",
@@ -47,10 +49,10 @@ export async function POST(request: Request) {
       amountInKobo: course.priceInKobo,
       metadata: {
         userId: session.user.id,
-        courseId,
+        courseId: course.id,
         paymentId: payment.id,
       },
-      callbackUrl: absoluteUrl(`/checkout/${courseId}/return`),
+      callbackUrl: absoluteUrl(`/checkout/${course.slug}/return`),
     })
 
     if (!result.status || !result.data) {

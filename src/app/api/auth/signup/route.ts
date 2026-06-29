@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/db"
+import { sendEmail, welcomeEmailHtml } from "@/lib/email"
 
 async function hashPassword(password: string): Promise<string> {
   const encoder = new TextEncoder()
@@ -41,7 +42,13 @@ export async function POST(request: Request) {
       },
     })
 
-    return NextResponse.json({ success: true }, { status: 201 })
+    const { sent: emailSent, error: emailError } = await sendEmail(
+      email,
+      "Welcome to Nerdhaven!",
+      welcomeEmailHtml(name || ""),
+    )
+
+    return NextResponse.json({ success: true, emailSent, emailError }, { status: 201 })
   } catch (error) {
     console.error("Signup error:", error)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })

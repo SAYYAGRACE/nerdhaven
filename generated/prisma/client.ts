@@ -117,6 +117,11 @@ export type StudyResource = Prisma.StudyResourceModel
  */
 export type PracticeTest = Prisma.PracticeTestModel
 /**
+ * Model ContactMessage
+ * 
+ */
+export type ContactMessage = Prisma.ContactMessageModel
+/**
  * Model StudyPlan
  * 
  */

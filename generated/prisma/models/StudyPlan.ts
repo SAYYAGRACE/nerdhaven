@@ -564,6 +564,7 @@ export type StudyPlanCreateOrConnectWithoutUserInput = {
 
 export type StudyPlanCreateManyUserInputEnvelope = {
   data: Prisma.StudyPlanCreateManyUserInput | Prisma.StudyPlanCreateManyUserInput[]
+  skipDuplicates?: boolean
 }
 
 export type StudyPlanUpsertWithWhereUniqueWithoutUserInput = {
@@ -626,6 +627,7 @@ export type StudyPlanCreateOrConnectWithoutExamInput = {
 
 export type StudyPlanCreateManyExamInputEnvelope = {
   data: Prisma.StudyPlanCreateManyExamInput | Prisma.StudyPlanCreateManyExamInput[]
+  skipDuplicates?: boolean
 }
 
 export type StudyPlanUpsertWithWhereUniqueWithoutExamInput = {
@@ -1486,6 +1488,7 @@ export type StudyPlanCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * The data used to create many StudyPlans.
    */
   data: Prisma.StudyPlanCreateManyInput | Prisma.StudyPlanCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1504,6 +1507,7 @@ export type StudyPlanCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Exten
    * The data used to create many StudyPlans.
    */
   data: Prisma.StudyPlanCreateManyInput | Prisma.StudyPlanCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

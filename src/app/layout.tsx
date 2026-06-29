@@ -6,8 +6,13 @@ import { Providers } from "./providers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Nerdhaven — Where Curiosity Meets Mastery",
+  title: "Nerdhaven",
   description: "The unified learning ecosystem for primary scholars, secondary exam warriors, university researchers, and business founders.",
+  icons: {
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

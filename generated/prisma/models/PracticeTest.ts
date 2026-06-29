@@ -746,6 +746,7 @@ export type PracticeTestCreateOrConnectWithoutUserInput = {
 
 export type PracticeTestCreateManyUserInputEnvelope = {
   data: Prisma.PracticeTestCreateManyUserInput | Prisma.PracticeTestCreateManyUserInput[]
+  skipDuplicates?: boolean
 }
 
 export type PracticeTestUpsertWithWhereUniqueWithoutUserInput = {
@@ -823,6 +824,7 @@ export type PracticeTestCreateOrConnectWithoutExamInput = {
 
 export type PracticeTestCreateManyExamInputEnvelope = {
   data: Prisma.PracticeTestCreateManyExamInput | Prisma.PracticeTestCreateManyExamInput[]
+  skipDuplicates?: boolean
 }
 
 export type PracticeTestUpsertWithWhereUniqueWithoutExamInput = {
@@ -880,6 +882,7 @@ export type PracticeTestCreateOrConnectWithoutSubjectInput = {
 
 export type PracticeTestCreateManySubjectInputEnvelope = {
   data: Prisma.PracticeTestCreateManySubjectInput | Prisma.PracticeTestCreateManySubjectInput[]
+  skipDuplicates?: boolean
 }
 
 export type PracticeTestUpsertWithWhereUniqueWithoutSubjectInput = {
@@ -1882,6 +1885,7 @@ export type PracticeTestCreateManyArgs<ExtArgs extends runtime.Types.Extensions.
    * The data used to create many PracticeTests.
    */
   data: Prisma.PracticeTestCreateManyInput | Prisma.PracticeTestCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1900,6 +1904,7 @@ export type PracticeTestCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Ex
    * The data used to create many PracticeTests.
    */
   data: Prisma.PracticeTestCreateManyInput | Prisma.PracticeTestCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

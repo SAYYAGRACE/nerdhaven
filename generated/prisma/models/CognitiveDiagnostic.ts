@@ -592,6 +592,7 @@ export type CognitiveDiagnosticCreateOrConnectWithoutUserInput = {
 
 export type CognitiveDiagnosticCreateManyUserInputEnvelope = {
   data: Prisma.CognitiveDiagnosticCreateManyUserInput | Prisma.CognitiveDiagnosticCreateManyUserInput[]
+  skipDuplicates?: boolean
 }
 
 export type CognitiveDiagnosticUpsertWithWhereUniqueWithoutUserInput = {
@@ -651,6 +652,7 @@ export type CognitiveDiagnosticCreateOrConnectWithoutCurriculumNodeInput = {
 
 export type CognitiveDiagnosticCreateManyCurriculumNodeInputEnvelope = {
   data: Prisma.CognitiveDiagnosticCreateManyCurriculumNodeInput | Prisma.CognitiveDiagnosticCreateManyCurriculumNodeInput[]
+  skipDuplicates?: boolean
 }
 
 export type CognitiveDiagnosticUpsertWithWhereUniqueWithoutCurriculumNodeInput = {
@@ -696,6 +698,7 @@ export type CognitiveDiagnosticCreateOrConnectWithoutAttemptInput = {
 
 export type CognitiveDiagnosticCreateManyAttemptInputEnvelope = {
   data: Prisma.CognitiveDiagnosticCreateManyAttemptInput | Prisma.CognitiveDiagnosticCreateManyAttemptInput[]
+  skipDuplicates?: boolean
 }
 
 export type CognitiveDiagnosticUpsertWithWhereUniqueWithoutAttemptInput = {
@@ -1590,6 +1593,7 @@ export type CognitiveDiagnosticCreateManyArgs<ExtArgs extends runtime.Types.Exte
    * The data used to create many CognitiveDiagnostics.
    */
   data: Prisma.CognitiveDiagnosticCreateManyInput | Prisma.CognitiveDiagnosticCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1608,6 +1612,7 @@ export type CognitiveDiagnosticCreateManyAndReturnArgs<ExtArgs extends runtime.T
    * The data used to create many CognitiveDiagnostics.
    */
   data: Prisma.CognitiveDiagnosticCreateManyInput | Prisma.CognitiveDiagnosticCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

@@ -1,9 +1,9 @@
 import "dotenv/config"
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3"
+import { PrismaNeon } from "@prisma/adapter-neon"
 import { PrismaClient } from "../generated/prisma/client.js"
 import { createHash } from "node:crypto"
 
-const adapter = new PrismaBetterSqlite3({ url: process.env.DATABASE_URL ?? "file:./dev.db" })
+const adapter = new PrismaNeon({ connectionString: process.env.DATABASE_URL ?? "" })
 const prisma = new PrismaClient({ adapter })
 
 const hash = (pw: string) => createHash("sha256").update(pw).digest("hex")
@@ -75,6 +75,23 @@ const SUBJECTS: Record<string, { name: string; slug: string; description: string
     { name: "Writing", slug: "ielts-writing", description: "IELTS Writing covering task 1 and task 2 essays." },
     { name: "Speaking", slug: "ielts-speaking", description: "IELTS Speaking covering introduction, long turn, and discussion." },
   ],
+}
+
+const WHATSAPP_GROUPS: Record<string, { link: string; memberCount: number }> = {
+  waec:        { link: "https://chat.whatsapp.com/waec2026",         memberCount: 2847 },
+  neco:        { link: "https://chat.whatsapp.com/neco2026",         memberCount: 1532 },
+  jamb:        { link: "https://chat.whatsapp.com/jamb2026",         memberCount: 4210 },
+  igcse:       { link: "https://chat.whatsapp.com/igcse2026",        memberCount: 1893 },
+  sat:         { link: "https://chat.whatsapp.com/sat2026",          memberCount: 976 },
+  nabteb:      { link: "https://chat.whatsapp.com/nabteb2026",       memberCount: 654 },
+  bece:        { link: "https://chat.whatsapp.com/bece2026",         memberCount: 1123 },
+  ielts:       { link: "https://chat.whatsapp.com/ielts2026",        memberCount: 2105 },
+  "primary-math-foundations":   { link: "https://chat.whatsapp.com/primarymath2026",   memberCount: 534 },
+  "igcse-math-mastery":         { link: "https://chat.whatsapp.com/igcsemath2026",      memberCount: 891 },
+  "wassce-complete-prep":       { link: "https://chat.whatsapp.com/wassce2026",         memberCount: 1567 },
+  "jamb-utme-success":          { link: "https://chat.whatsapp.com/jambutme2026",       memberCount: 2109 },
+  "advanced-python-architecture": { link: "https://chat.whatsapp.com/python2026",       memberCount: 423 },
+  "venture-scaling-growth":     { link: "https://chat.whatsapp.com/venture2026",        memberCount: 287 },
 }
 
 const QUESTIONS: Record<string, { question: string; options: string[]; correctAnswer: string; explanation: string; year: number; difficulty: string }[]> = {

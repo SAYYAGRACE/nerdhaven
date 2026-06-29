@@ -75,26 +75,34 @@ export default function PrimaryCoursesPage() {
       ) : (
         <motion.div variants={stagger.item} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {courses.map((course) => (
-            <Link key={course.id} href={`/courses/${course.id}`}
-              className="group rounded-xl border border-gray-100 bg-white p-5 shadow-sm transition hover:border-emerald-200 hover:shadow-md"
-            >
-              <div className="mb-3 flex items-start justify-between">
-                <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-medium", difficultyStyles[course.difficulty])}>
-                  {course.difficulty}
-                </span>
-                <span className="text-sm font-bold text-emerald-600">
-                  ₦{(course.priceInKobo / 100).toLocaleString()}
-                </span>
+            <div key={course.id} className="group rounded-xl border border-gray-100 bg-white shadow-sm transition hover:border-emerald-200 hover:shadow-md">
+              <Link href={`/courses/${course.slug}`} className="block p-5 pb-3">
+                <div className="mb-3 flex items-start justify-between">
+                  <span className={cn("rounded-full px-2.5 py-0.5 text-xs font-medium", difficultyStyles[course.difficulty])}>
+                    {course.difficulty}
+                  </span>
+                  <span className="text-sm font-bold text-emerald-600">
+                    ₦{(course.priceInKobo / 100).toLocaleString()}
+                  </span>
+                </div>
+                <h3 className="font-semibold text-gray-900 group-hover:text-emerald-600">{course.title}</h3>
+                {course.shortDescription && (
+                  <p className="mt-1.5 text-sm text-gray-500">{course.shortDescription}</p>
+                )}
+                <div className="mt-4 flex items-center gap-4 border-t border-gray-50 pt-3 text-xs text-gray-400">
+                  <span className="flex items-center gap-1"><Users className="h-3.5 w-3.5" /> {course._count.enrollments} students</span>
+                  <span className="flex items-center gap-1"><BookOpen className="h-3.5 w-3.5" /> {course._count.curriculumNodes} lessons</span>
+                </div>
+              </Link>
+              <div className="border-t border-gray-50 px-5 py-3">
+                <Link
+                  href={`/checkout/${course.slug}`}
+                  className="inline-flex w-full items-center justify-center gap-1 rounded-lg bg-emerald-600 px-3 py-2 text-xs font-semibold text-white transition hover:bg-emerald-700"
+                >
+                  Buy Now
+                </Link>
               </div>
-              <h3 className="font-semibold text-gray-900 group-hover:text-emerald-600">{course.title}</h3>
-              {course.shortDescription && (
-                <p className="mt-1.5 text-sm text-gray-500">{course.shortDescription}</p>
-              )}
-              <div className="mt-4 flex items-center gap-4 border-t border-gray-50 pt-3 text-xs text-gray-400">
-                <span className="flex items-center gap-1"><Users className="h-3.5 w-3.5" /> {course._count.enrollments} students</span>
-                <span className="flex items-center gap-1"><BookOpen className="h-3.5 w-3.5" /> {course._count.curriculumNodes} lessons</span>
-              </div>
-            </Link>
+            </div>
           ))}
         </motion.div>
       )}
