@@ -12,8 +12,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
-    "postbuild": "",
-    "start": "node .next/standalone/nerdhaven/server.js",
     "lint": "eslint",
     "db:seed": "tsx prisma/seed.ts",
     "db:seed-resources": "tsx prisma/seed-actual-resources.ts",
