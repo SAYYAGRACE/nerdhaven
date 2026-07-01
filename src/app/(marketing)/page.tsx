@@ -439,7 +439,7 @@ export default function MarketingHome() {
               resources, and a network of innovators shaping the future.
             </p>
             <a
-              href="http://localhost:5173/"
+              href="https://nextwave-members.vercel.app"
               target="_blank"
               rel="noopener noreferrer"
               className="mt-10 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-400 to-pink-400 px-8 py-4 text-base font-semibold text-gray-900 shadow-lg shadow-purple-900/30 transition-all hover:scale-105 hover:shadow-xl active:scale-95"
