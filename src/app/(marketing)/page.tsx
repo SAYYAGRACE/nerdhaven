@@ -421,6 +421,35 @@ export default function MarketingHome() {
         </div>
       </section>
 
+      {/* Nextwave Membership */}
+      <section className="bg-gradient-to-br from-indigo-900 via-purple-900 to-indigo-800 py-24">
+        <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
+          <motion.div {...fadeInUp}>
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10 backdrop-blur">
+              <Sparkles className="h-8 w-8 text-purple-300" />
+            </div>
+            <h2 className="text-3xl font-bold text-white sm:text-4xl">
+              Become a Member of{" "}
+              <span className="bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">
+                Nextwave
+              </span>
+            </h2>
+            <p className="mx-auto mt-4 max-w-xl text-lg text-purple-200">
+              Join the Nextwave community and unlock access to cutting-edge tools,
+              resources, and a network of innovators shaping the future.
+            </p>
+            <a
+              href="http://localhost:5173/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-10 inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-purple-400 to-pink-400 px-8 py-4 text-base font-semibold text-gray-900 shadow-lg shadow-purple-900/30 transition-all hover:scale-105 hover:shadow-xl active:scale-95"
+            >
+              Join Nextwave <ArrowRight className="h-5 w-5" />
+            </a>
+          </motion.div>
+        </div>
+      </section>
+
       <Footer />
     </>
   )
